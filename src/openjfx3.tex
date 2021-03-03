@@ -1,0 +1,42 @@
+% ======================================================================
+% openjfx3.tex - creates the 3:1 ratio featured banner for OpenJFX
+% Copyright (C) 2021 John Neffenger
+%
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+% ======================================================================
+\input{src/preamble.tex}
+\geometry{papersize={6in,2in},scale=0.80}
+
+% PDF metadata
+\hypersetup{
+    pdftitle={OpenJFX Featured Banner},
+    pdfsubject={Snap Store featured banner for the OpenJFX package},
+    pdfauthor={John Neffenger},
+    pdfkeywords={openjfx, javafx, sdk, snap, linux}
+}
+
+\begin{document}
+\vspace*{\stretch{2}}
+\centering
+\fontsize{48pt}{60pt}\selectfont
+\includegraphics[height=\baselineskip]{tmp/dukewave.pdf}\textbf{OpenJFX}
+
+\bigskip
+\fontsize{16pt}{20pt}\selectfont
+JavaFX Cross-Platform Application Framework
+
+Verifiable builds for Linux from source
+
+\vspace{\stretch{3}}
+\end{document}

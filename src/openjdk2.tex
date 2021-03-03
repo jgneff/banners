@@ -1,0 +1,46 @@
+% ======================================================================
+% openjdk2.tex - creates the 2:1 ratio social preview for OpenJDK
+% Copyright (C) 2021 John Neffenger
+%
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+% ======================================================================
+\input{src/preamble.tex}
+\geometry{papersize={6in,3in},scale=0.80}
+
+% PDF metadata
+\hypersetup{
+    pdftitle={OpenJDK Social Preview},
+    pdfsubject={GitHub social media preview for the OpenJDK repository},
+    pdfauthor={John Neffenger},
+    pdfkeywords={openjdk, java, jdk, snap, linux}
+}
+
+\begin{document}
+\vspace*{\stretch{2}}
+\centering
+\fontsize{48pt}{60pt}\selectfont
+\includegraphics[height=\baselineskip]{tmp/dukewave.pdf}\textbf{OpenJDK}
+
+\bigskip
+\fontsize{32pt}{40pt}\selectfont
+Java Development Kit
+
+\medskip
+\fontsize{16pt}{20pt}\selectfont
+Verifiable builds for Linux from source
+
+amd64 · arm64 · armhf · i386 · ppc64el · s390x
+
+\vspace{\stretch{3}}
+\end{document}

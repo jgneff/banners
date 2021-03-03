@@ -1,0 +1,54 @@
+% ======================================================================
+% preamble.tex - preamble for social previews and featured banners
+% Copyright (C) 2021 John Neffenger
+%
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+% ======================================================================
+\documentclass[12pt]{article}
+\usepackage{fontspec}
+\usepackage[verbose]{geometry}
+\usepackage[bookmarks=false]{hyperref}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+
+% Replaces Ubuntu with Ubuntu Medium
+\setmainfont[
+    Ligatures = TeX,
+    UprightFont = *-M,
+    ItalicFont = *-MI,
+    BoldFont = *-B,
+    BoldItalicFont = *-BI
+]{Ubuntu}
+
+% Java Licensing Logo Guidelines
+% https://www.oracle.com/legal/logos.html
+\definecolor{javablue}{HTML}{007396}
+\definecolor{javaorange}{HTML}{ed8b00}
+
+%\geometry{showframe=true}
+\geometry{nomarginpar,centering}
+\setlength{\topskip}{0pt}
+\pagestyle{empty}
+\color{javablue}
+
+% Reproducible builds
+\pdfvariable suppressoptionalinfo \numexpr
+        0
+    +   1 % PTEX.FullBanner - LuaTeX and TeX Live versions
+    +  32 % CreationDate - date and time
+    +  64 % ModDate - date and time
+    + 128 % Producer - LuaTeX version
+    + 512 % ID - computed from current time and full path of output file
+\relax
