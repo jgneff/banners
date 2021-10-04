@@ -36,7 +36,7 @@ java_orange = --color "\#ed8b00"
 MKBITMAP_OPTS = --filter 16 --scale 2 --cubic --threshold 0.45
 POTRACE_OPTS  = --backend pdf $(java_blue) --resolution 90 --turdsize 2
 LATEXMK_OPTS  = -lualatex
-MUDRAW_OPTS   = -r 192
+MUDRAW_OPTS   = -r 192 -c rgbalpha
 OPTIPNG_OPTS  = -quiet
 SCOUR_OPTS    = --remove-metadata --indent=none --strip-xml-space \
     --enable-id-stripping --shorten-ids
