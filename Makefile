@@ -16,8 +16,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ======================================================================
 
+# Sets 'CreationDate' of 'rsvg-convert' output for reproducible builds
+export SOURCE_DATE_EPOCH := $(shell git log -1 --pretty=%ct)
+
 # Commands
-INKSCAPE = inkscape
+LIBRSVG  = rsvg-convert
 LATEXMK  = latexmk
 EXIFTOOL = exiftool
 MUDRAW   = mutool draw
@@ -26,6 +29,7 @@ PDF2SVG  = pdf2svg
 SCOUR    = scour
 
 # Command options
+LIBRSVG_OPTS = --format=pdf
 LATEXMK_OPTS = -lualatex
 MUDRAW_OPTS  = -r 192
 OPTIPNG_OPTS = -quiet
@@ -66,8 +70,10 @@ targets := $(openjdk) $(openjfx) $(maven) $(netbeans)
 
 PDFCMD = $(LATEXMK) $(LATEXMK_OPTS) -output-directory=$(@D) $<
 
+# Makes PDF files
+
 tmp/%.pdf: src/%.svg | tmp
-	$(INKSCAPE) --export-pdf=$@ $<
+	$(LIBRSVG) $(LIBRSVG_OPTS) --output=$@ $<
 
 tmp/open%.pdf: src/open%.tex src/preamble.tex tmp/dukewave.pdf
 	$(PDFCMD)
@@ -81,12 +87,16 @@ tmp/netbeans%.pdf: src/netbeans%.tex src/preamble.tex tmp/netbeans.pdf
 out/%.pdf: tmp/%.pdf tmp/%.xmp | out
 	$(EXIFTOOL) -tagsFromFile $(word 2,$^) -out - $< > $@
 
+# Makes PNG files
+
 tmp/%.png: out/%.pdf
 	$(MUDRAW) $(MUDRAW_OPTS) -o $@ $<
 
 out/%.png: tmp/%.png tmp/%.xmp
 	$(EXIFTOOL) -tagsFromFile $(word 2,$^) -out - $< > $@
 	$(OPTIPNG) $(OPTIPNG_OPTS) $@
+
+# Makes SVG files
 
 tmp/%.svg: out/%.pdf
 	$(PDF2SVG) $< $@
