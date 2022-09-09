@@ -1,6 +1,6 @@
 % ======================================================================
-% openjfx3.tex - creates the 3:1 featured banner for OpenJFX
-% Copyright (C) 2021-2022 John Neffenger
+% netbeans2.tex - creates the 2:1 social preview for Strictly NetBeans
+% Copyright (C) 2022 John Neffenger
 %
 % This program is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
@@ -16,25 +16,29 @@
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 % ======================================================================
 \input{src/preamble.tex}
-\geometry{papersize={6in,2in},hscale=0.95,vscale=0.80}
+\geometry{papersize={6in,3in},hscale=0.95,vscale=0.80}
 
 % PDF metadata
 \hypersetup{
-    pdftitle={OpenJFX Featured Banner},
-    pdfsubject={Snap Store featured banner for the OpenJFX package},
+    pdftitle={Strictly NetBeans Social Preview},
+    pdfsubject={GitHub social media preview for the Strictly NetBeans repository},
     pdfauthor={John Neffenger},
-    pdfkeywords={openjfx, javafx, sdk, snap, linux}
+    pdfkeywords={apache, netbeans, snap, linux}
 }
 
 \begin{document}
 \vspace*{\stretch{2}}
 \centering
-\fontsize{56pt}{56pt}\selectfont
-\includegraphics[height=\baselineskip]{tmp/dukewave.pdf}\,\textbf{OpenJFX}
+\fontsize{68pt}{68pt}\selectfont
+\raisebox{-10pt}{\includegraphics[height=\baselineskip]{tmp/netbeans.pdf}}\,\textbf{NetBeans}
 
 \bigskip
+\fontsize{33pt}{33pt}\selectfont
+Extensible IDE for Java
+
+\medskip
 \fontsize{19pt}{23pt}\selectfont
-Current JavaFX release \& early-access builds
+Apache NetBeans\raisebox{6pt}{\small ®} in a strictly-confined snap
 
 amd64 · arm64 · armhf · i386 · ppc64el · s390x
 

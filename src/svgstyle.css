@@ -1,6 +1,6 @@
 <style>
-path, text {fill: #007396;}
+#surface1 {fill: #1a69c5;}
 @media (prefers-color-scheme: dark) {
-  path, text {fill: #ed8b00;}
+  #surface1 {fill: #2d8fe7;}
 }
 </style>
