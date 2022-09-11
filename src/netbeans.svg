@@ -14,9 +14,8 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<svg width="444px" height="512px" version="1.1" viewBox="0 0 444 512" xmlns="http://www.w3.org/2000/svg">
+<svg width="444px" height="512px" viewBox="0 0 444 512" xmlns="http://www.w3.org/2000/svg">
 <title>Apache NetBeans Logo</title>
-<description>Apache NetBeans Logo</description>
 <g fill-rule="evenodd" stroke-width="0">
 <path d="m222 0v99l-136 79-86-50 222-128z" fill="#A1C535"/>
 <path d="m444 128-86 50-136-79v-99l222 128z" fill="#ADD439"/>
