@@ -34,7 +34,7 @@ LATEXMK_OPTS = -lualatex
 MUDRAW_OPTS  = -r 192
 OPTIPNG_OPTS = -quiet
 SCOUR_OPTS   = --remove-metadata --indent=none --strip-xml-space \
-    --enable-id-stripping --shorten-ids --protect-ids-prefix=surface
+    --enable-id-stripping --protect-ids-prefix=surface
 
 # ExifTool options to list the Creative Commons license metadata
 exif_xmp := -XMP-cc:all -XMP-dc:all -XMP-xmpRights:all \
@@ -107,7 +107,7 @@ tmp/%-scour.svg: tmp/%.svg
 tmp/%.xml: tmp/%.xmp
 	sed $(sed_xmp) $< > $@
 
-out/%.svg: tmp/%-scour.svg tmp/%.xml src/svgstyle.css
+out/%.svg: tmp/%-scour.svg tmp/%.xml src/svgauth.css
 	sed -e "/<svg/r $(word 2,$^)" -e "/<svg/r $(word 3,$^)" $< > $@
 
 # ======================================================================
