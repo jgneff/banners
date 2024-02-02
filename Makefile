@@ -107,6 +107,9 @@ tmp/%-scour.svg: tmp/%.svg
 tmp/%.xml: tmp/%.xmp
 	sed $(sed_xmp) $< > $@
 
+out/open%.svg: tmp/open%-scour.svg tmp/open%.xml src/svgopen.css
+	sed -e "/<svg/r $(word 2,$^)" -e "/<svg/r $(word 3,$^)" $< > $@
+
 out/%.svg: tmp/%-scour.svg tmp/%.xml src/svgauth.css
 	sed -e "/<svg/r $(word 2,$^)" -e "/<svg/r $(word 3,$^)" $< > $@
 
