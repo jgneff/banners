@@ -23,18 +23,19 @@ export SOURCE_DATE_EPOCH := $(shell git log -1 --pretty=%ct)
 LIBRSVG  = rsvg-convert
 LATEXMK  = latexmk
 EXIFTOOL = exiftool
-MUDRAW   = mutool draw
-OPTIPNG  = optipng
 PDF2SVG  = pdf2svg
 SCOUR    = scour
+OPTIPNG  = optipng
 
 # Command options
-LIBRSVG_OPTS = --format=pdf
+SVG2PDF_OPTS = --format=pdf
+# Background color from Firefox "Open Image in New Tab"
+# chrome://global/skin/media/imagedoc-darknoise.png
+SVG2PNG_OPTS = --zoom=2 --background-color=\#222222
 LATEXMK_OPTS = -lualatex
-MUDRAW_OPTS  = -r 192
-OPTIPNG_OPTS = -quiet
 SCOUR_OPTS   = --remove-metadata --indent=none --strip-xml-space \
     --enable-id-stripping --protect-ids-prefix=surface
+OPTIPNG_OPTS = -quiet
 
 # ExifTool options to list the Creative Commons license metadata
 exif_xmp := -XMP-cc:all -XMP-dc:all -XMP-xmpRights:all \
@@ -73,7 +74,7 @@ PDFCMD = $(LATEXMK) $(LATEXMK_OPTS) -output-directory=$(@D) $<
 # Makes PDF files
 
 tmp/%.pdf: src/%.svg | tmp
-	$(LIBRSVG) $(LIBRSVG_OPTS) --output=$@ $<
+	$(LIBRSVG) $(SVG2PDF_OPTS) --output=$@ $<
 
 tmp/open%.pdf: src/open%.tex src/preamble.tex tmp/dukewave.pdf
 	$(PDFCMD)
@@ -86,15 +87,6 @@ tmp/netbeans%.pdf: src/netbeans%.tex src/preamble.tex tmp/netbeans.pdf
 
 out/%.pdf: tmp/%.pdf tmp/%.xmp | out
 	$(EXIFTOOL) -tagsFromFile $(word 2,$^) -out - $< > $@
-
-# Makes PNG files
-
-tmp/%.png: out/%.pdf
-	$(MUDRAW) $(MUDRAW_OPTS) -o $@ $<
-
-out/%.png: tmp/%.png tmp/%.xmp
-	$(EXIFTOOL) -tagsFromFile $(word 2,$^) -out - $< > $@
-	$(OPTIPNG) $(OPTIPNG_OPTS) $@
 
 # Makes SVG files
 
@@ -112,6 +104,18 @@ out/open%.svg: tmp/open%-scour.svg tmp/open%.xml src/svgopen.css
 
 out/%.svg: tmp/%-scour.svg tmp/%.xml src/svgauth.css
 	sed -e "/<svg/r $(word 2,$^)" -e "/<svg/r $(word 3,$^)" $< > $@
+
+# Makes PNG files
+
+tmp/open%.png: out/open%.svg src/pngopen.css
+	$(LIBRSVG) $(SVG2PNG_OPTS) --stylesheet=$(word 2,$^) --output=$@ $<
+
+tmp/%.png: out/%.svg src/pnguser.css
+	$(LIBRSVG) $(SVG2PNG_OPTS) --stylesheet=$(word 2,$^) --output=$@ $<
+
+out/%.png: tmp/%.png tmp/%.xmp
+	$(EXIFTOOL) -tagsFromFile $(word 2,$^) -out - $< > $@
+	$(OPTIPNG) $(OPTIPNG_OPTS) $@
 
 # ======================================================================
 # Explicit rules
