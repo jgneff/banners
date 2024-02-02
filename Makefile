@@ -37,6 +37,12 @@ SCOUR_OPTS   = --remove-metadata --indent=none --strip-xml-space \
     --enable-id-stripping --protect-ids-prefix=surface
 OPTIPNG_OPTS = -quiet
 
+# Options for Duke Waving (original SVG is 225.94 × 407.41 px)
+duke2pdf = --format=pdf \
+    --page-width=232 --page-height=414 --top=3 --left=3
+duke2png = --format=png --height=500 --keep-aspect-ratio \
+    --page-width=512 --page-height=512 --top=6 --left=117
+
 # ExifTool options to list the Creative Commons license metadata
 exif_xmp := -XMP-cc:all -XMP-dc:all -XMP-xmpRights:all \
     -groupNames1 -veryShort -duplicates
@@ -47,6 +53,7 @@ sed_jdk := "s/REPO/openjdk/"
 sed_jfx := "s/REPO/openjfx/"
 sed_mvn := "s/REPO/strictly-maven/"
 sed_ide := "s/REPO/strictly-netbeans/"
+sed_duke := "s/REPO/banners/"
 
 sed_jdk_social := "s/TITLE/OpenJDK Social Preview/"
 sed_jdk_banner := "s/TITLE/OpenJDK Featured Banner/"
@@ -56,6 +63,7 @@ sed_mvn_social := "s/TITLE/Strictly Maven Social Preview/"
 sed_mvn_banner := "s/TITLE/Strictly Maven Featured Banner/"
 sed_ide_social := "s/TITLE/Strictly NetBeans Social Preview/"
 sed_ide_banner := "s/TITLE/Strictly NetBeans Featured Banner/"
+sed_duke_icon  := "s/TITLE/Duke Waving Icon/"
 
 # List of targets
 openjdk  := $(foreach n,2 3,$(addprefix out/openjdk$(n).,pdf png svg))
@@ -63,7 +71,7 @@ openjfx  := $(foreach n,2 3,$(addprefix out/openjfx$(n).,pdf png svg))
 maven    := $(foreach n,2 3,$(addprefix out/maven$(n).,pdf png svg))
 netbeans := $(foreach n,2 3,$(addprefix out/netbeans$(n).,pdf png svg))
 
-targets := $(openjdk) $(openjfx) $(maven) $(netbeans)
+targets := $(openjdk) $(openjfx) $(maven) $(netbeans) out/dukewave.png
 
 # ======================================================================
 # Pattern Rules
@@ -136,6 +144,12 @@ netbeans: $(netbeans)
 tmp out:
 	mkdir -p $@
 
+tmp/dukewave.pdf: src/dukewave.svg | tmp
+	$(LIBRSVG) $(duke2pdf) --output=$@ $<
+
+tmp/dukewave.png: src/dukewave.svg src/pngduke.css
+	$(LIBRSVG) $(duke2png) --stylesheet=$(word 2,$^) --output=$@ $<
+
 tmp/openjdk2.xmp: src/metadata.xmp
 	sed -e $(sed_jdk) -e $(sed_jdk_social) $< > $@
 
@@ -159,6 +173,9 @@ tmp/netbeans2.xmp: src/metadata.xmp
 
 tmp/netbeans3.xmp: src/metadata.xmp
 	sed -e $(sed_ide) -e $(sed_ide_banner) $< > $@
+
+tmp/dukewave.xmp: src/metadata.xmp
+	sed -e $(sed_duke) -e $(sed_duke_icon) $< > $@
 
 list: $(targets)
 	$(EXIFTOOL) $(exif_xmp) $^
