@@ -17,7 +17,7 @@
 # ======================================================================
 
 # Sets 'CreationDate' of 'rsvg-convert' output for reproducible builds
-export SOURCE_DATE_EPOCH := $(shell git log -1 --pretty=%ct)
+export SOURCE_DATE_EPOCH := $(shell git log main -1 --pretty=%ct)
 
 # Commands
 LIBRSVG  = rsvg-convert
@@ -26,6 +26,7 @@ EXIFTOOL = exiftool
 PDF2SVG  = pdf2svg
 SCOUR    = scour
 OPTIPNG  = optipng
+MOGRIFY  = mogrify
 
 # Command options
 SVG2PDF_OPTS = --format=pdf
@@ -37,11 +38,12 @@ SCOUR_OPTS   = --remove-metadata --indent=none --strip-xml-space \
     --enable-id-stripping --protect-ids-prefix=surface
 OPTIPNG_OPTS = -quiet
 
-# Options for Duke Waving (original SVG is 225.94 × 407.41 px)
-duke2pdf = --format=pdf \
-    --page-width=232 --page-height=414 --top=3 --left=3
-duke2png = --format=png --height=500 --keep-aspect-ratio \
-    --page-width=512 --page-height=512 --top=6 --left=117
+# 'rsvg-convert' options for Duke icon (original SVG is 225.94 × 407.41 px)
+duke2pdf = --format=pdf --page-width=232 --page-height=414 --top=3 --left=3
+duke2png = --height=500 --page-width=512 --page-height=512 --top=6 --left=118
+
+# ImageMagick options to resize and center icons
+center_icon = -background none -gravity center -trim +repage -extent 512x512
 
 # ExifTool options to list the Creative Commons license metadata
 exif_xmp := -XMP-cc:all -XMP-dc:all -XMP-xmpRights:all \
@@ -49,11 +51,12 @@ exif_xmp := -XMP-cc:all -XMP-dc:all -XMP-xmpRights:all \
 
 # Sed scripts to edit the XMP metadata for the SVG files
 sed_xmp := "s/x:xmpmeta.*>/metadata>/"
+
 sed_jdk := "s/REPO/openjdk/"
 sed_jfx := "s/REPO/openjfx/"
 sed_mvn := "s/REPO/strictly-maven/"
 sed_ide := "s/REPO/strictly-netbeans/"
-sed_duke := "s/REPO/banners/"
+sed_ico := "s/REPO/banners/"
 
 sed_jdk_social := "s/TITLE/OpenJDK Social Preview/"
 sed_jdk_banner := "s/TITLE/OpenJDK Featured Banner/"
@@ -63,15 +66,18 @@ sed_mvn_social := "s/TITLE/Strictly Maven Social Preview/"
 sed_mvn_banner := "s/TITLE/Strictly Maven Featured Banner/"
 sed_ide_social := "s/TITLE/Strictly NetBeans Social Preview/"
 sed_ide_banner := "s/TITLE/Strictly NetBeans Featured Banner/"
-sed_duke_icon  := "s/TITLE/Duke Waving Icon/"
+sed_jdk_icon   := "s/TITLE/Duke Waving Icon/"
+sed_mvn_icon   := "s/TITLE/Strictly Maven Icon/"
+sed_ide_icon   := "s/TITLE/Strictly NetBeans Icon/"
 
 # List of targets
 openjdk  := $(foreach n,2 3,$(addprefix out/openjdk$(n).,pdf png svg))
 openjfx  := $(foreach n,2 3,$(addprefix out/openjfx$(n).,pdf png svg))
 maven    := $(foreach n,2 3,$(addprefix out/maven$(n).,pdf png svg))
 netbeans := $(foreach n,2 3,$(addprefix out/netbeans$(n).,pdf png svg))
+icons    := out/dukewave.png out/maven.png out/netbeans.png
 
-targets := $(openjdk) $(openjfx) $(maven) $(netbeans) out/dukewave.png
+targets := $(openjdk) $(openjfx) $(maven) $(netbeans) $(icons)
 
 # ======================================================================
 # Pattern Rules
@@ -149,6 +155,15 @@ tmp/dukewave.pdf: src/dukewave.svg | tmp
 
 tmp/dukewave.png: src/dukewave.svg src/pngduke.css
 	$(LIBRSVG) $(duke2png) --stylesheet=$(word 2,$^) --output=$@ $<
+	$(MOGRIFY) $(center_icon) $@
+
+tmp/maven.png: src/maven.svg src/maven.css
+	$(LIBRSVG) --width=512 --stylesheet=$(word 2,$^) --output=$@ $<
+	$(MOGRIFY) $(center_icon) $@
+
+tmp/netbeans.png: src/netbeans.svg
+	$(LIBRSVG) --height=500 --output=$@ $<
+	$(MOGRIFY) $(center_icon) $@
 
 tmp/openjdk2.xmp: src/metadata.xmp
 	sed -e $(sed_jdk) -e $(sed_jdk_social) $< > $@
@@ -175,7 +190,13 @@ tmp/netbeans3.xmp: src/metadata.xmp
 	sed -e $(sed_ide) -e $(sed_ide_banner) $< > $@
 
 tmp/dukewave.xmp: src/metadata.xmp
-	sed -e $(sed_duke) -e $(sed_duke_icon) $< > $@
+	sed -e $(sed_ico) -e $(sed_jdk_icon) $< > $@
+
+tmp/maven.xmp: src/metadata.xmp
+	sed -e $(sed_ico) -e $(sed_mvn_icon) $< > $@
+
+tmp/netbeans.xmp: src/metadata.xmp
+	sed -e $(sed_ico) -e $(sed_ide_icon) $< > $@
 
 list: $(targets)
 	$(EXIFTOOL) $(exif_xmp) $^
