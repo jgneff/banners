@@ -1,12 +1,11 @@
 <style>
 /* GitHub background and link colors: light default and dark dimmed */
 svg {background-color: #ffffff;}
-#surface1 {fill: #0969da;}
-#surface5 {fill: #000000;}
-#surface5 > :nth-child(-n + 3) {stroke: #0969da;}
+svg > g {fill: #0969da;}
+#source-5 > :nth-child(-n + 3) {stroke: #0969da;}
 @media (prefers-color-scheme: dark) {
   svg {background-color: #22272e;}
-  #surface1 {fill: #539bf5;}
-  #surface5 > :nth-child(-n + 3) {stroke: #539bf5;}
+  svg > g {fill: #539bf5;}
+  #source-5 > :nth-child(-n + 3) {stroke: #539bf5;}
 }
 </style>

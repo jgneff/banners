@@ -1,3 +1,3 @@
 /* Link color for GitHub dark dimmed theme */
-#surface1 {fill: #539bf5 !important;}
-#surface5 > :nth-child(-n + 3) {stroke: #539bf5 !important;}
+svg > g {fill: #539bf5 !important;}
+#source-5 > :nth-child(-n + 3) {stroke: #539bf5 !important;}

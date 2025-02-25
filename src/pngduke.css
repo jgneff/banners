@@ -1,2 +1,2 @@
 /* Link color for GitHub dark dimmed theme */
-svg :nth-child(-n + 3) {stroke: #539bf5; stroke-width: 4px;}
+svg > :nth-child(-n + 3) {stroke: #539bf5; stroke-width: 4px;}

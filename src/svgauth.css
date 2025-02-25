@@ -1,9 +1,7 @@
 <style>
 /* GitHub background and link colors: light default and dark dimmed */
-svg {background-color: #ffffff;}
-#surface1 {fill: #0969da;}
+svg {background-color: #ffffff; fill: #0969da;}
 @media (prefers-color-scheme: dark) {
-  svg {background-color: #22272e;}
-  #surface1 {fill: #539bf5;}
+  svg {background-color: #22272e; fill: #539bf5;}
 }
 </style>

@@ -23,7 +23,7 @@ export SOURCE_DATE_EPOCH := $(shell git log main -1 --pretty=%ct)
 LIBRSVG  = rsvg-convert
 LATEXMK  = latexmk
 EXIFTOOL = exiftool
-PDF2SVG  = pdf2svg
+PDF2SVG  = pdftocairo
 SCOUR    = scour
 OPTIPNG  = optipng
 MOGRIFY  = mogrify
@@ -34,8 +34,7 @@ SVG2PDF_OPTS = --format=pdf
 # chrome://global/skin/media/imagedoc-darknoise.png
 SVG2PNG_OPTS = --zoom=2 --background-color=\#222222
 LATEXMK_OPTS = -lualatex
-SCOUR_OPTS   = --remove-metadata --indent=none --strip-xml-space \
-    --enable-id-stripping --protect-ids-prefix=surface
+SCOUR_OPTS   = --enable-viewboxing --indent=none
 OPTIPNG_OPTS = -quiet
 
 # 'rsvg-convert' options for Duke icon (original SVG is 225.94 × 407.41 px)
@@ -105,7 +104,7 @@ out/%.pdf: tmp/%.pdf tmp/%.xmp | out
 # Makes SVG files
 
 tmp/%.svg: out/%.pdf
-	$(PDF2SVG) $< $@
+	$(PDF2SVG) -svg $< $@
 
 tmp/%-scour.svg: tmp/%.svg
 	$(SCOUR) -i $< -o $@ $(SCOUR_OPTS)
