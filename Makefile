@@ -32,7 +32,7 @@ MOGRIFY  = mogrify
 SVG2PDF_OPTS = --format=pdf
 # Background color from Firefox "Open Image in New Tab"
 # chrome://global/skin/media/imagedoc-darknoise.png
-SVG2PNG_OPTS = --zoom=2 --background-color=\#222222
+SVG2PNG_OPTS = --background-color=\#222222
 LATEXMK_OPTS = -lualatex
 SCOUR_OPTS   = --enable-viewboxing --indent=none
 OPTIPNG_OPTS = -quiet
@@ -40,6 +40,14 @@ OPTIPNG_OPTS = -quiet
 # 'rsvg-convert' options for Duke icon (original SVG is 225.94 × 407.41 px)
 duke2pdf = --format=pdf --page-width=232 --page-height=414 --top=3 --left=3
 duke2png = --height=500 --page-width=512 --page-height=512 --top=6 --left=118
+
+# Snapcraft featured banner - PNG or JPEG
+# 3:1 aspect ratio: 720 × 240 px min, 4320 × 1440 px max
+featured = --zoom=5
+
+# GitHub social preview - PNG, GIF, or JPEG
+# 2:1 aspect ratio: 640 × 320 px min, 1280 × 640 px best
+social = --width=1280 --height=640 --keep-aspect-ratio
 
 # ImageMagick options to resize and center icons
 center_icon = -background none -gravity center -trim +repage -extent 512x512
@@ -120,11 +128,17 @@ out/%.svg: tmp/%-scour.svg tmp/%.xml src/svgauth.css
 
 # Makes PNG files
 
-tmp/open%.png: out/open%.svg src/pngopen.css
-	$(LIBRSVG) $(SVG2PNG_OPTS) --stylesheet=$(word 2,$^) --output=$@ $<
+tmp/open%3.png: out/open%3.svg src/pngopen.css
+	$(LIBRSVG) $(featured) $(SVG2PNG_OPTS) --stylesheet=$(word 2,$^) --output=$@ $<
 
-tmp/%.png: out/%.svg src/pnguser.css
-	$(LIBRSVG) $(SVG2PNG_OPTS) --stylesheet=$(word 2,$^) --output=$@ $<
+tmp/%3.png: out/%3.svg src/pnguser.css
+	$(LIBRSVG) $(featured) $(SVG2PNG_OPTS) --stylesheet=$(word 2,$^) --output=$@ $<
+
+tmp/open%2.png: out/open%2.svg src/pngopen.css
+	$(LIBRSVG) $(social) $(SVG2PNG_OPTS) --stylesheet=$(word 2,$^) --output=$@ $<
+
+tmp/%2.png: out/%2.svg src/pnguser.css
+	$(LIBRSVG) $(social) $(SVG2PNG_OPTS) --stylesheet=$(word 2,$^) --output=$@ $<
 
 out/%.png: tmp/%.png tmp/%.xmp
 	$(EXIFTOOL) -tagsFromFile $(word 2,$^) -out - $< > $@
