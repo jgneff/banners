@@ -30,9 +30,10 @@ MOGRIFY  = mogrify
 
 # Command options
 SVG2PDF_OPTS = --format=pdf
-# Background color from Firefox "Open Image in New Tab"
-# chrome://global/skin/media/imagedoc-darknoise.png
-SVG2PNG_OPTS = --background-color=\#222222
+# #222222 - Background color of Firefox "Open Image in New Tab"
+#           chrome://global/skin/media/imagedoc-darknoise.png
+# #0d1117 - Background color of GitHub dark default theme
+SVG2PNG_OPTS = --background-color=\#0d1117
 LATEXMK_OPTS = -lualatex
 SCOUR_OPTS   = --enable-viewboxing --indent=none
 OPTIPNG_OPTS = -quiet
